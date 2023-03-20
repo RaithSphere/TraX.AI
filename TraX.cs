@@ -11,11 +11,11 @@ public class CPHInline
 {
     public bool Execute()
     {
-        string apiKey 			= args["chatGPT3APIkey"].ToString();
-        string model 			= args["engine"].ToString();
-        string voice 			= args["voice"].ToString();
-        string brain 			= args["brain"].ToString();
-        string tokens 			= args["tokens"].ToString();
+        string apiKey 		= args["chatGPT3APIkey"].ToString();
+        string model 		= args["engine"].ToString();
+        string voice 		= args["voice"].ToString();
+        string brain 		= args["brain"].ToString();
+        string tokens 		= args["tokens"].ToString();
         var discordWebhookUrl 	= args["discordWebhook"].ToString();
         	    
         	    
@@ -28,12 +28,11 @@ public class CPHInline
         CPH.LogInfo("Requesting ChatGPT");
         
         // generate a response with the ChatGPTAPI
-		    bool containsQuestionMark = messageInput.Contains("?");
+	bool containsQuestionMark = messageInput.Contains("?");
         
         if(containsQuestionMark) { CPH.TtsSpeak(voice, user + " asks " + messageInput, false); }
         else {CPH.TtsSpeak(voice, user + " says " + messageInput, false);}
         
-		
         string response = chatGPT.GenerateResponse(messageInput, user, model, brain, tokens);
         CPH.LogDebug("Response: " + response);
           
@@ -54,22 +53,22 @@ public class CPHInline
           CPH.TtsSpeak(voice, "Well", false);
           CPH.TtsSpeak(voice, finalGPT, false);
 
-          if(discordWebhookUrl != null)
-          {
-            var discordWebhookContent = new DiscordWebhookContent
-            {
-              content = $"**{user} asked {messageInput}**\n{finalGPT}"
-            };
-            var discordWebhookJson = JsonConvert.SerializeObject(discordWebhookContent);
-            var discordWebhookHttpContent = new StringContent(discordWebhookJson, Encoding.UTF8, "application/json");
-            var discordWebhookHttpClient = new HttpClient();
-            discordWebhookHttpClient.PostAsync(discordWebhookUrl, discordWebhookHttpContent).Wait();
-          }
+		  if(discordWebhookUrl != null)
+		  {
+		    var discordWebhookContent = new DiscordWebhookContent
+		    {
+		      content = $"**{user} asked {messageInput}**\n{finalGPT}"
+		    };
+		    var discordWebhookJson = JsonConvert.SerializeObject(discordWebhookContent);
+		    var discordWebhookHttpContent = new StringContent(discordWebhookJson, Encoding.UTF8, "application/json");
+		    var discordWebhookHttpClient = new HttpClient();
+		    discordWebhookHttpClient.PostAsync(discordWebhookUrl, discordWebhookHttpContent).Wait();
 		  }
-      else
-      {
+	}
+	else
+      	{
         CPH.TtsSpeak(voice, "I seem to be overloaded right now, try again shortly", false);
-      }
+      	}
         return true;
     }
     
@@ -105,7 +104,6 @@ public class CPHInline
 			}
 			// Get the response from the ChatGPT API
 			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-			
 
 				if((int)response.StatusCode == 200)
 				{
@@ -147,10 +145,12 @@ public class Usage
     public int total_tokens { get; set; }
 }
 
-public class Root    {
+public class Root    
+{
     public string id { get; set; }
     public string @object { get; set; }
     public int created { get; set; }
     public string model { get; set; }
     public List<Choice> choices { get; set; }
-    public Usage usage { get; set; }    }
+    public Usage usage { get; set; }    
+}
