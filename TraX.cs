@@ -14,7 +14,6 @@ public class CPHInline
         string apiKey 		= args["chatGPT3APIkey"].ToString();
         string model 		= args["engine"].ToString();
         string voice 		= args["voice"].ToString();
-        string brain 		= args["brain"].ToString();
         string tokens 		= args["tokens"].ToString();
         var discordWebhookUrl 	= args["discordWebhook"].ToString();
         	    
@@ -33,7 +32,7 @@ public class CPHInline
         if(containsQuestionMark) { CPH.TtsSpeak(voice, user + " asks " + messageInput, false); }
         else {CPH.TtsSpeak(voice, user + " says " + messageInput, false);}
         
-        string response = chatGPT.GenerateResponse(messageInput, user, model, brain, tokens);
+        string response = chatGPT.GenerateResponse(messageInput, user, model, tokens);
         CPH.LogDebug("Response: " + response);
           
         if(response != "TooManyRequests")   
@@ -84,7 +83,7 @@ public class CPHInline
 		{
 			_apiKey = apiKey;
 		}
-		public string GenerateResponse(string prompt, string who, string model, string brain, string tokens)
+		public string GenerateResponse(string prompt, string who, string model, string tokens)
 		{
 			// Create a request to the ChatGPT API
 			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_endpoint);
